@@ -10,9 +10,7 @@ const createBase64String = data => {
 
 const createToken = ({ id }) => {
   data = createBase64String(id);
-  return jwt.sign({
-    data
-  }, SECRET, { expiresIn, algorithm: 'RS256' });
+  return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
 
 module.exports = {
