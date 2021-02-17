@@ -32,7 +32,7 @@ app.post("/users/token", async (req, res) => {
   res.send(token);
 });
 
-app.get("/data/records", jwt({ secret: JWT_SECRET }), async (req, res) => {
+app.get("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['RS256'] }), async (req, res) => {
   res.send('lol');
 });
 
