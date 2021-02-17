@@ -7,10 +7,11 @@ const ipfilter = require('express-ipfilter').IpFilter
 
 const { init } = require('./config/database.config');
 
-const { ips } = require("./config/constants");
+const { users } = require("./config/constants");
 const { customDetection } = require("./util");
 const errorMiddleware = require('./util/errorMiddleware');
 
+const ips = users.map( user => user.ip );
 app.use(express.json());
 app.use(morgan('combined'));
 app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection }))
@@ -18,7 +19,7 @@ app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection }))
 //Initialize DB
 init();
 
-app.get("/", async (req, res) => res.send("hi ${req.ip}"));
+app.get("/", async (req, res) => res.send(`hi ${req.ip}`));
 
 app.use(errorMiddleware)
 
