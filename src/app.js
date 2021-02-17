@@ -13,7 +13,7 @@ const errorMiddleware = require('./util/errorMiddleware');
 
 app.use(express.json());
 app.use(morgan('combined'));
-app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection  }))
+app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection() }))
 
 //Initialize DB
 init();
