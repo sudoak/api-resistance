@@ -12,7 +12,7 @@ const createToken = ({ id }) => {
   data = createBase64String(id);
   return jwt.sign({
     data
-  }, SECRET, { expiresIn });
+  }, SECRET, { expiresIn, algorithm: 'RS256' });
 }
 
 module.exports = {
