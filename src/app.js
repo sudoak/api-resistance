@@ -11,7 +11,7 @@ const rateLimiterRedisMiddleware = require('./config/ratelimit');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const { users } = require("./config/constants");
-const { customDetection } = require("./util");
+const { customDetection, errorHandler } = require("./util");
 const errorMiddleware = require('./util/errorMiddleware');
 
 const ips = users.map( user => user.ip );
@@ -27,10 +27,10 @@ init();
 
 app.get("/", async (req, res) => res.send(`hi ${req.ip}`));
 
-app.post("/users/token", async (req, res) => {
+app.post("/users/token", errorHandler((req, res) => {
   const token = createToken(req.body);
   res.send(token);
-});
+}));
 
 app.get("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), async (req, res) => {
   res.send('lol');
