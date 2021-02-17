@@ -41,7 +41,6 @@ const customDetection = req => {
 }
 
 module.exports = {
-    hashPassword,
     errorHandler,
     isValidMongoId,
     validate,
