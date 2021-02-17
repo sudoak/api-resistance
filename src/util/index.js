@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Address6 = require('ip-address').Address6;
 const createError  = require('http-errors');
 const { validationResult } = require('express-validator');
 
@@ -33,11 +34,10 @@ const validate = (req, res, next) => {
 }
 
 const customDetection = req => {
-  var ipAddress
+  let address = new Address6(req.ip);
+  let teredo = address.inspectTeredo();
  
-  ipAddress = req.ip.replace(/\//g, '.')
- 
-  return ipAddress
+  return teredo.client4; 
 }
 
 module.exports = {
