@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const createError = require('http-errors');
+const { find } = require('lodash');
+const { users } = require('../config/constants');
 
 const expiresIn = process.env.EXPIRES_IN;
 const SECRET = process.env.JWT_SECRET;
@@ -9,6 +12,10 @@ const createBase64String = data => {
 }
 
 const createToken = ({ id }) => {
+  const user = find(users, { id });
+  if(!user){
+    throw createError(404, "User Not found");
+  }
   data = createBase64String(id);
   return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
