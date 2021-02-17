@@ -13,6 +13,8 @@ const { customDetection } = require("./util");
 const errorMiddleware = require('./util/errorMiddleware');
 
 const ips = users.map( user => user.ip );
+const { createToken } = require('./services');
+
 app.use(express.json());
 app.use(morgan('combined'));
 app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection }))
@@ -22,6 +24,11 @@ app.use(rateLimiterRedisMiddleware);
 init();
 
 app.get("/", async (req, res) => res.send(`hi ${req.ip}`));
+app.post("/users/token", async (req, res) => {
+  const token = createToken(req.body);
+  res.send(token);
+});
+
 
 app.use(errorMiddleware)
 
