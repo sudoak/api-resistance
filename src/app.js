@@ -6,12 +6,15 @@ const app = express();
 const ipfilter = require('express-ipfilter').IpFilter
 
 const { init } = require('./config/database.config');
-const { ips } = require("./config/constants");
 
+const { ips } = require("./config/constants");
+const { customDetection } = require("./util");
 const errorMiddleware = require('./util/errorMiddleware');
+
 app.use(express.json());
 app.use(morgan('combined'));
-app.use(ipfilter(ips, { mode: 'allow' }))
+app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection  }))
+
 //Initialize DB
 init();
 

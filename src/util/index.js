@@ -43,9 +43,18 @@ const validate = (req, res, next) => {
     })
 }
 
+const customDetection = req => {
+  var ipAddress
+ 
+  ipAddress = req.connection.remoteAddress.replace(/\//g, '.')
+ 
+  return ipAddress
+}
+
 module.exports = {
     hashPassword,
     errorHandler,
     isValidMongoId,
-    validate
+    validate,
+    customDetection
 }
