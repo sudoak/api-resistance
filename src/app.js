@@ -18,7 +18,7 @@ app.use(ipfilter(ips, { mode: 'allow', detectIp: customDetection }))
 //Initialize DB
 init();
 
-app.get("/", async (req, res) => res.send(req.ip));
+app.get("/", async (req, res) => res.send("hi ${req.ip}"));
 
 app.use(errorMiddleware)
 
