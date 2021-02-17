@@ -35,7 +35,7 @@ const validate = (req, res, next) => {
 const customDetection = req => {
   var ipAddress
  
-  ipAddress = req.connection.remoteAddress.replace(/\//g, '.')
+  ipAddress = req.ip.replace(/\//g, '.')
  
   return ipAddress
 }
