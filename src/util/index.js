@@ -1,18 +1,7 @@
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const createError  = require('http-errors');
 const { validationResult } = require('express-validator');
 
-const hashPassword =  async (password) => {
-    const saltRounds = 10;
-    return await new Promise((resolve, reject) => {
-        bcrypt.hash(password, saltRounds, async function(err, hash) {
-            if (err) reject(err)
-            console.log(hash, password);
-            resolve(hash)
-        });
-    });
-}
 
 const errorHandler = handler => async (req, res, next) => {
     try {
