@@ -32,9 +32,9 @@ app.post("/users/token", errorHandler((req, res) => {
   res.send(token);
 }));
 
-app.get("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), async (req, res) => {
+app.post("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), errorHandler(async (req, res) => {
   res.send('lol');
-});
+}));
 
 app.use(errorMiddleware)
 

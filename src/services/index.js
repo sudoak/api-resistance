@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const createError = require('http-errors');
 const { find } = require('lodash');
 const { users } = require('../config/constants');
+const RECORDS = require('../model/records.schema');
 
 const expiresIn = process.env.EXPIRES_IN;
 const SECRET = process.env.JWT_SECRET;
@@ -20,6 +21,9 @@ const createToken = ({ id }) => {
   return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
 
+const getRecords = async device_id => {
+  
+}
 module.exports = {
   createToken
 }
