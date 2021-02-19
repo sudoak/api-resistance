@@ -33,8 +33,8 @@ app.post("/users/token", errorHandler((req, res) => {
 }));
 
 app.post("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), errorHandler(async (req, res) => {
-  const { month, device_id } = req.body;
-  const data = await getRecords(device_id, month);
+  const { month, device_id, year } = req.body;
+  const data = await getRecords(device_id, month, year);
   const response = {
     data,
     count: data.length,
