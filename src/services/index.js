@@ -24,7 +24,7 @@ const createToken = ({ id }) => {
 const getRecords = async (device_id = "XXXX", month = "01") => {
   // db.xecords.aggregate([{ '$project': {     device_id:1, recordedTime:1, month: { $substr: ["$recordedTime", 5, 2] } }  }, {$match: {month:"12"}}]);
   return await RECORDS.aggregate([
-    { $project: { device_id: 1, e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, month: { $substr: ["$recordedTime", 5, 2] }}},
+    { $project: { _id:0, device_id: 1, e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, month: { $substr: ["$recordedTime", 5, 2] }}},
     { $match: { month, device_id }}
   ]).allowDiskUse(true);;
 
