@@ -22,16 +22,44 @@ const createToken = ({ id }) => {
   return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
 
-const isPresent = () => {
-
+const isPresent = key => {
+  REDIS_CLIENT.exists(key,function(err,reply) {
+    if(!err) {
+      if(reply === 1) {
+        return true;
+      }
+    }
+    return false;
+  });   
 }
 
-const setRecords = () => {
+const getRedisRecords = key => {
+  return new Promise((resolve, reject) => {
+    client.get(key, async (err, data = null) => {
+      if (err) console.log(err);
+      resolve(data)
+    });
+  })
+  
+}
 
+const setRedisRecords = (key, data) => {
+  try{
+    REDIS_CLIENT.setex(key, 604800, JSON.stringify(data));
+  }catch(err){
+    console.log(err)
+  }
 }
 const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
   // db.xecords.aggregate([{ '$project': {     device_id:1, recordedTime:1, month: { $substr: ["$recordedTime", 5, 2] } }  }, {$match: {month:"12"}}]);
-  return await RECORDS.aggregate([
+  
+  const key = `${month}-${year}-${device_id}`;
+  let data;
+  if(isPresent(key)) {
+      data = await getRedisRecords(key);
+      return JSON.parse(data);
+  }
+  data = await RECORDS.aggregate([
     { $project: { _id:0, 
       device_id: 1, 
       e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, 
@@ -40,7 +68,8 @@ const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
     }},
     { $match: { month, device_id, year }}
   ]).allowDiskUse(true);
-
+  setRedisRecords(data);
+  return data;
 }
 
 module.exports = {
