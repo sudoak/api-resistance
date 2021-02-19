@@ -60,6 +60,7 @@ const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
   console.log("1", key);
   let data;
   if(isPresent(key)) {
+      console.log("yay");
       data = await getRedisRecords(key);
       return JSON.parse(data);
   }
