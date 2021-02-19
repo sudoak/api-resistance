@@ -11,5 +11,5 @@ const recordSchema = new mongoose.Schema({
     date: String,
 });
 
-module.exports = mongoose.model('records', recordSchema);
+module.exports = mongoose.model('xecords', recordSchema);
 

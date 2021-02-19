@@ -15,7 +15,7 @@ const { customDetection, errorHandler } = require("./util");
 const errorMiddleware = require('./util/errorMiddleware');
 
 const ips = users.map( user => user.ip );
-const { createToken } = require('./services');
+const { createToken, getRecords } = require('./services');
 
 app.use(express.json());
 app.use(morgan('combined'));
@@ -33,7 +33,9 @@ app.post("/users/token", errorHandler((req, res) => {
 }));
 
 app.post("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), errorHandler(async (req, res) => {
-  res.send('lol');
+  const { month, device_id } = req.body;
+  const data = await getRecords(device_id, month);
+  res.send(data);
 }));
 
 app.use(errorMiddleware)
