@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const { find } = require('lodash');
 const { users } = require('../config/constants');
 const RECORDS = require('../model/records.schema');
+const REDIS_CLIENT = require('../config/redis');
 
 const expiresIn = process.env.EXPIRES_IN;
 const SECRET = process.env.JWT_SECRET;
@@ -21,12 +22,24 @@ const createToken = ({ id }) => {
   return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
 
-const getRecords = async (device_id = "XXXX", month = "01") => {
+const isPresent = () => {
+
+}
+
+const setRecords = () => {
+
+}
+const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
   // db.xecords.aggregate([{ '$project': {     device_id:1, recordedTime:1, month: { $substr: ["$recordedTime", 5, 2] } }  }, {$match: {month:"12"}}]);
   return await RECORDS.aggregate([
-    { $project: { _id:0, device_id: 1, e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, month: { $substr: ["$recordedTime", 5, 2] }}},
-    { $match: { month, device_id }}
-  ]).allowDiskUse(true);;
+    { $project: { _id:0, 
+      device_id: 1, 
+      e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, 
+      month: { $substr: ["$recordedTime", 5, 2] },
+      year: { $substr: ["$recordedTime", 0, 4] }
+    }},
+    { $match: { month, device_id, year }}
+  ]).allowDiskUse(true);
 
 }
 
