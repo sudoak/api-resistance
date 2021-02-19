@@ -68,7 +68,7 @@ const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
     }},
     { $match: { month, device_id, year }}
   ]).allowDiskUse(true);
-  setRedisRecords(data);
+  setRedisRecords(key, data);
   return data;
 }
 
