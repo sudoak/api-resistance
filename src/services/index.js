@@ -26,6 +26,7 @@ const isPresent = key => {
   REDIS_CLIENT.exists(key,function(err,reply) {
     if(!err) {
       if(reply === 1) {
+        console.log("2", reply)
         return true;
       }
     }
@@ -37,6 +38,7 @@ const getRedisRecords = key => {
   return new Promise((resolve, reject) => {
     client.get(key, async (err, data = null) => {
       if (err) console.log(err);
+      console.log("3", data)
       resolve(data)
     });
   })
@@ -54,6 +56,7 @@ const getRecords = async (device_id = "XXXX", month = "01", year = "2020") => {
   // db.xecords.aggregate([{ '$project': {     device_id:1, recordedTime:1, month: { $substr: ["$recordedTime", 5, 2] } }  }, {$match: {month:"12"}}]);
   
   const key = `${month}-${year}-${device_id}`;
+  console.log("1", key);
   let data;
   if(isPresent(key)) {
       data = await getRedisRecords(key);
