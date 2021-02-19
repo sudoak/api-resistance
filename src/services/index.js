@@ -35,8 +35,9 @@ const isPresent = key => {
 }
 
 const getRedisRecords = key => {
+  console.log("lol");
   return new Promise((resolve, reject) => {
-    REDIS_CLIENT.get(key, async (err, data) => {
+    REDIS_CLIENT.get(key, (err, data) => {
       if (err) console.log(err);
       console.log("3", data)
       resolve(data)
