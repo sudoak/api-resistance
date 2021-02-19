@@ -4,8 +4,8 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const ipfilter = require('express-ipfilter').IpFilter
-var jwt = require('express-jwt');
-
+const jwt = require('express-jwt');
+const dayJs = require('dayjs'); 
 const { init } = require('./config/database.config');
 const rateLimiterRedisMiddleware = require('./config/ratelimit');
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -35,7 +35,12 @@ app.post("/users/token", errorHandler((req, res) => {
 app.post("/data/records", jwt({ secret: JWT_SECRET, algorithms: ['HS256'] }), errorHandler(async (req, res) => {
   const { month, device_id } = req.body;
   const data = await getRecords(device_id, month);
-  res.send(data);
+  const response = {
+    data,
+    count: data.length,
+    timestamp: dayJs().format()
+  }
+  res.send(response);
 }));
 
 app.use(errorMiddleware)

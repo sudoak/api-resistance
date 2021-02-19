@@ -21,7 +21,7 @@ const createToken = ({ id }) => {
   return jwt.sign({ data }, SECRET, { expiresIn, algorithm: 'HS256' });
 }
 
-const getRecords = async (device_id, month) => {
+const getRecords = async (device_id = "XXXX", month = "01") => {
   // db.xecords.aggregate([{ '$project': {     device_id:1, recordedTime:1, month: { $substr: ["$recordedTime", 5, 2] } }  }, {$match: {month:"12"}}]);
   return await RECORDS.aggregate([
     { $project: { device_id: 1, e1: 1, e2: 1, e3: 1, e4: 1, e5: 1, recordedTime: 1, month: { $substr: ["$recordedTime", 5, 2] }}},
